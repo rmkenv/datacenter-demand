@@ -87,32 +87,13 @@ pytest
 For questions or issues:
 
 - See the [GitHub Issues](#)  
-- Contact the research team: **research@datacenter-power.com**  
-- Refer to inline function docstrings and comments  
+
 
 ---
 
 ## License
 
 This project is licensed under the **MIT License** — see the `LICENSE` file for details.
-
----
-
-## Citation
-
-If you use this algorithm in scholarly work, please cite:
-
-```bibtex
-@article{datacenter_power_prediction_2025,
-  title={Estimating U.S. Datacenter Power Demand: An Integrated Algorithmic Framework},
-  author={Research Team},
-  journal={Energy Systems Modeling and Policy},
-  year={2025},
-  volume={XX},
-  pages={XXX--XXX},
-  doi={10.XXXX/XXXX}
-}
-```
 
 ---
 
