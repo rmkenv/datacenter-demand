@@ -1,0 +1,15 @@
+{
+  "data": {
+    "n_samples": 2000,
+    "output_file": "us_datacenter_power_demand_dataset.csv",
+    "validation_split": 0.2,
+    "random_seed": 42
+  },
+  "model_config": {
+    "rf_n_estimators": 100,
+    "gb_n_estimators": 100,
+    "nn_hidden_layers": [100, 50],
+    "nn_max_iter": 500,
+    "cv_folds": 5
+  }
+}
