@@ -1,154 +1,139 @@
-text
-# Simple Gas Pipeline Data Analysis
+Here’s your README reformatted into a clean, professional structure with proper Markdown syntax:
 
-A minimal, API-free Python project for analyzing gas pipeline delivery data. Includes basic analytics, anomaly detection, and plotting. Designed for use in Jupyter, Colab, or as a simple Python script.
+---
+
+# US Datacenter Power Demand Estimation Algorithm
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/)  
+This repository contains a **simplified, self-contained implementation** of a **machine-learning-based algorithm** to estimate the power demand of datacenters in the US electrical grid, considering both datacenter infrastructure and surrounding business contexts.
+
+The model integrates server hardware characteristics, facility design parameters, business presence (manufacturing, technology hubs, retail, etc.), local grid infrastructure, and environmental conditions to accurately predict power demand with high confidence.
+
+---
 
 ## Features
 
-- Seasonal pattern analysis and time series visualization
-- Basic anomaly detection (z-score method)
-- Throughput and capacity summary stats
-- Geographic plotting (if lat/lon available)
-- Fully local, no API or cloud dependencies
+- Synthetic **datacenter dataset generator** calibrated to US state-level statistics  
+- **Single-facility power demand prediction** with uncertainty estimates  
+- Multi-model **machine learning training pipeline** (Random Forest, Gradient Boosting, Neural Network)  
+- **Neural Network achieves** top performance:  
+  - \( R^2 \approx 0.96 \)  
+  - MAPE \( \approx 12.6\% \)  
+- Command-Line Interface (CLI) for data generation, model training, and making predictions  
+- Basic **publication-quality visualizations** to analyze data and model results  
+- Comprehensive **test suite** to ensure correctness  
+- Easy **configuration** through `config.json`  
+- Lightweight dependencies for quick installation  
 
-## Setup
+---
 
-1. Install dependencies:
-pip install pandas numpy matplotlib seaborn
+## Quick Start
 
-text
-2. (Optional) For notebooks, install Jupyter or run in Colab.
+### Install Dependencies
 
-## Usage
+```bash
+pip install -r requirements.txt
+```
 
-- Run example analyses using the included notebook.
-- Or run directly:
-python pipeline_analysis.py
+### Generate Synthetic Dataset
 
-text
+```bash
+python dcpower.py generate
+```
 
-## Data
+### Train Machine Learning Models
 
-The provided `gas_pipeline_sample.csv` is for demonstration. Use your own data by matching its structure:
-- pipeline_name, loc_name, eff_gas_day, scheduled_quantity, latitude, longitude
+```bash
+python dcpower.py train
+```
 
-## Extending
+### Predict Power Demand for a Single Datacenter
 
-Add new analysis or plotting functions in `pipeline_analysis.py`.
+```bash
+python dcpower.py predict --servers 5000 --rack-density 15 --gpu 0.4 --pue 1.3 \
+--sqft 200000 --cooling Liquid --state Virginia --grid-capacity 850 --temp 65
+```
+
+### Run Unit Tests
+
+```bash
+pytest
+```
+
+---
+
+## Repository Structure
+
+- `datacenter_power_predictor.py` — Core algorithm and ML training code  
+- `data_utils.py` — Utilities for synthetic dataset generation  
+- `train_models.py` — Training and evaluation pipeline  
+- `dcpower.py` — Command-line interface for all operations  
+- `visualization_utils.py` — Plotting functions for visualization  
+- `test_datacenter_predictor.py` — Pytest suite to validate functionality  
+- `config.json` — User-configurable parameters for training and data  
+- `requirements.txt` — All Python package dependencies  
+- `README.md` — Project overview and instructions  
+- `setup.py` — Installation script for pip-install  
+
+---
+
+## Research Highlights and Results
+
+- **Machine Learning Accuracy:** Neural Networks achieved an \( R^2 \) of 0.96 and MAPE around 12.6%  
+- **Feature Importance:** Server count, facility size, and rack density dominate power demand prediction; nearby businesses add demand multipliers  
+- **US State Power Shares:** Virginia leads with over 25% of its electricity devoted to datacenters, followed by Midwest and West Coast states  
+- **Grid Impact Stratification:** Most datacenters represent low–moderate grid load impact; a small percentage cause high strain in key utility territories  
+
+---
+
+## Getting Help
+
+For questions or issues:
+
+- See the [GitHub Issues](#)  
+- Contact the research team: **research@datacenter-power.com**  
+- Refer to inline function docstrings and comments  
+
+---
 
 ## License
 
-MIT
-data/gas_pipeline_sample.csv
-Example with synthetic data:
+This project is licensed under the **MIT License** — see the `LICENSE` file for details.
 
-text
-pipeline_name,loc_name,eff_gas_day,scheduled_quantity,latitude,longitude
-Alpha,StationA,2023-01-01,1050,40.7128,-74.0060
-Alpha,StationA,2023-01-02,970,40.7128,-74.0060
-Alpha,StationA,2023-01-03,985,40.7128,-74.0060
-Beta,StationB,2023-01-01,800,34.0522,-118.2437
-Beta,StationB,2023-01-02,810,34.0522,-118.2437
-Beta,StationB,2023-01-03,780,34.0522,-118.2437
-pipeline_analysis.py
-python
-"""
-Simple Gas Pipeline Data Analysis: basic stats, anomaly detection, and plots.
-Author: [your name]
-"""
+---
 
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+## Citation
 
-def load_data(filepath):
-    """Load pipeline data from CSV."""
-    df = pd.read_csv(filepath, parse_dates=["eff_gas_day"])
-    return df
+If you use this algorithm in scholarly work, please cite:
 
-def summary_statistics(df):
-    """Show capacity and throughput stats."""
-    print("---- SUMMARY STATISTICS ----")
-    print(df.groupby('pipeline_name')["scheduled_quantity"].describe())
+```bibtex
+@article{datacenter_power_prediction_2025,
+  title={Estimating U.S. Datacenter Power Demand: An Integrated Algorithmic Framework},
+  author={Research Team},
+  journal={Energy Systems Modeling and Policy},
+  year={2025},
+  volume={XX},
+  pages={XXX--XXX},
+  doi={10.XXXX/XXXX}
+}
+```
 
-def plot_time_series(df):
-    """Plot time series for each pipeline/location."""
-    for (pipeline, loc), group in df.groupby(['pipeline_name', 'loc_name']):
-        plt.figure(figsize=(8, 4))
-        plt.plot(group['eff_gas_day'], group['scheduled_quantity'])
-        plt.title(f"{pipeline} / {loc} Delivery Over Time")
-        plt.xlabel("Date")
-        plt.ylabel("Scheduled Quantity")
-        plt.show()
+---
 
-def detect_anomalies(df, threshold=2.5):
-    """Flag days where delivery quantity is far from mean (z-score method)."""
-    df['zscore'] = (df['scheduled_quantity'] - df['scheduled_quantity'].mean()) / df['scheduled_quantity'].std()
-    anomalies = df[np.abs(df['zscore']) > threshold]
-    print("---- ANOMALIES (by z-score > {:.1f}) ----".format(threshold))
-    print(anomalies[['pipeline_name', 'loc_name', 'eff_gas_day', 'scheduled_quantity', 'zscore']])
-    return anomalies
+## Acknowledgments
 
-def plot_geographic(df):
-    """Simple scatterplot of locations (if lat/lon available)."""
-    plt.figure(figsize=(6, 4))
-    sns.scatterplot(x='longitude', y='latitude', hue='pipeline_name', data=df)
-    plt.title("Pipeline Station Locations")
-    plt.xlabel("Longitude")
-    plt.ylabel("Latitude")
-    plt.show()
+Thanks to the U.S. Department of Energy, Lawrence Berkeley National Laboratory, and Energy Systems Integration Group for data and inspiration.
 
-def main():
-    df = load_data("data/gas_pipeline_sample.csv")
-    summary_statistics(df)
-    plot_time_series(df)
-    detect_anomalies(df)
-    plot_geographic(df)
+---
 
-if __name__ == "__main__":
-    main()
-example_notebook.ipynb
-Use a Jupyter Notebook for step-by-step exploration. Below is a description; actual cells should follow this sequence:
+## References  
 
-Cell 1: Install packages (if needed)
+1. [INET-TUB Datacenter Study](https://github.com/inet-tub/ns3-datacenter)  
+2. [Thesis on Datacenter Energy Use](http://www.diva-portal.org/smash/get/diva2:1150590/FULLTEXT01.pdf)  
+3. [NREL Report on Datacenters](https://docs.nrel.gov/docs/fy17osti/68576.pdf)  
+4. [ScienceDirect Research Article](https://www.sciencedirect.com/science/article/am/pii/S0306261918304768)  
+5. [IEA Report 2025](https://www.iea-4e.org/wp-content/uploads/2025/05/Data-Centre-Energy-Use-Critical-Review-of-Models-and-Results.pdf)  
+6. [DOE/LBNL Guidelines](https://datacenters.lbl.gov/sites/default/files/Guidelines%20for%20Datacenter%20Measure%20and%20Manage-Mahdavi-%20August%202014.pdf)  
+7. [A2EI Data Release](https://a2ei.org/resources/uploads/2020/12/ReadMe_CC_Data_Release.pdf)  
 
-python
-!pip install pandas numpy matplotlib seaborn
-Cell 2: Import code and load data
-
-python
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-df = pd.read_csv("data/gas_pipeline_sample.csv", parse_dates=["eff_gas_day"])
-Cell 3: Explore statistics
-
-python
-df.groupby('pipeline_name')["scheduled_quantity"].describe()
-Cell 4: Plot time series
-
-python
-for (pipeline, loc), group in df.groupby(['pipeline_name', 'loc_name']):
-    plt.figure(figsize=(8, 4))
-    plt.plot(group['eff_gas_day'], group['scheduled_quantity'])
-    plt.title(f"{pipeline} / {loc} Delivery Over Time")
-    plt.xlabel("Date")
-    plt.ylabel("Scheduled Quantity")
-    plt.show()
-Cell 5: Detect anomalies
-
-python
-df['zscore'] = (df['scheduled_quantity'] - df['scheduled_quantity'].mean()) / df['scheduled_quantity'].std()
-anomalies = df[np.abs(df['zscore']) > 2.5]
-anomalies
-Cell 6: Plot station locations
-
-python
-sns.scatterplot(x='longitude', y='latitude', hue='pipeline_name', data=df)
-plt.title("Pipeline Station Locations")
-plt.xlabel("Longitude")
-plt.ylabel("Latitude")
-plt.show()
+---
