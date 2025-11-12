@@ -88,7 +88,7 @@ def create_power_breakdown_chart(results: Dict) -> go.Figure:
         font={'family': "Arial", 'size': 12}
     )
     
-    fig.update_yaxis(showgrid=True, gridcolor='lightgray')
+    fig.update_yaxes(showgrid=True, gridcolor='lightgray')
     
     return fig
 
@@ -134,7 +134,7 @@ def create_state_comparison_chart(current_state: str, current_percentage: float,
         font={'family': "Arial", 'size': 11}
     )
     
-    fig.update_xaxis(showgrid=True, gridcolor='lightgray')
+    fig.update_xaxes(showgrid=True, gridcolor='lightgray')
     
     return fig
 
@@ -241,8 +241,8 @@ def create_uncertainty_range_chart(results: Dict) -> go.Figure:
         font={'family': "Arial"}
     )
     
-    fig.update_xaxis(showgrid=True, gridcolor='lightgray')
-    fig.update_yaxis(showticklabels=False)
+    fig.update_xaxes(showgrid=True, gridcolor='lightgray')
+    fig.update_yaxes(showticklabels=False)
     
     return fig
 
