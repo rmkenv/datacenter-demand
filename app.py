@@ -375,7 +375,7 @@ with tab4:
         
         # Key metrics at top
         st.subheader("Key Impact Metrics")
-        st.plotly_chart(create_impact_summary_metrics(results), use_container_width=True)
+        st.plotly_chart(create_impact_summary_metrics(results), width='stretch')
         
         # Grid utilization gauge
         col1, col2 = st.columns([1, 1])
@@ -387,7 +387,7 @@ with tab4:
                     results['grid_utilization_percent'],
                     results['grid_impact']
                 ),
-                use_container_width=True
+                width='stretch'
             )
             
             # Impact level indicator
@@ -401,7 +401,7 @@ with tab4:
         
         with col2:
             st.subheader("Power Demand Breakdown")
-            st.plotly_chart(create_power_breakdown_chart(results), use_container_width=True)
+            st.plotly_chart(create_power_breakdown_chart(results), width='stretch')
         
         # Detailed metrics
         st.subheader("Detailed Predictions")
@@ -438,7 +438,7 @@ with tab4:
         
         # Uncertainty range
         st.subheader("Prediction Uncertainty")
-        st.plotly_chart(create_uncertainty_range_chart(results), use_container_width=True)
+        st.plotly_chart(create_uncertainty_range_chart(results), width='stretch')
         st.caption(f"Predicted range: {results['uncertainty_range_mw'][0]:.1f} - {results['uncertainty_range_mw'][1]:.1f} MW "
                    f"(based on model accuracy of ±12.6%)")
         
@@ -450,7 +450,7 @@ with tab4:
                 results['state_datacenter_percentage'],
                 DatacenterImpactPredictor
             ),
-            use_container_width=True
+            width='stretch'
         )
         
         # Environmental and Economic Impact
@@ -696,7 +696,7 @@ with tab5:
 # SIDEBAR
 # ============================================================================
 with st.sidebar:
-    st.image("https://via.placeholder.com/300x100/3498db/ffffff?text=Datacenter+Impact", use_container_width=True)
+    st.image("https://via.placeholder.com/300x100/3498db/ffffff?text=Datacenter+Impact", width='stretch')
     
     st.markdown("### 🎯 Quick Navigation")
     st.markdown("""
